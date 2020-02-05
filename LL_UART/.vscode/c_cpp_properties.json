@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "name": "Keil_arm",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Keil_v5/ARM/ARMCLANG/include"
+            ],
+            "defines": [
+                "__ARMCC_VERSION=6010050",
+                "USE_FULL_LL_DRIVER",
+                "STM32G431xx"
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "compilerPath": "",
+            "intelliSenseMode": "gcc-x64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        }
+    ],
+    "version": 4
+}
