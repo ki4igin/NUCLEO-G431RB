@@ -1,12 +1,19 @@
 // Includes --------------------------------------------------------------------
 #include "uart.h"
+#include "gpio.h"
 #include "stm32g4xx.h"
 // Private Typedef -------------------------------------------------------------
 
 // Private Macro ---------------------------------------------------------------
-#define LPUARD_RX_PIN GPIO_BSRR_BS3
-#define LPUARD_TX_PIN GPIO_BSRR_BS2
-#define LPUARD_PORT   GPIOA
+#define LPUART_RX_PIN    GPIO_PIN_3
+#define LPUART_TX_PIN    GPIO_PIN_2
+#define LPUART_PORT      GPIOA
+#define LPUART_BAUD_RATE 115200
+
+#define UART_RX_PIN    GPIO_PIN_5
+#define UART_TX_PIN    GPIO_PIN_4
+#define UART_PORT      GPIOC
+#define UART_BAUD_RATE 9375000
 // Private Variables -----------------------------------------------------------
 
 // Private Function prototypes -------------------------------------------------
@@ -16,10 +23,50 @@ void LPUartInit(void)
 {
   RCC->APB1ENR2 |= RCC_APB1ENR2_LPUART1EN;
   RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
-  
 
-  //   GPIO Configuration
-  //   PA2  ------> LPUART1_TX
-  //   PA3  ------> LPUART1_RX
-  GPIOA->MODER |= GPIO_MODER_MODE0_1;
+  // GPIO Configuration
+  GpioSetMode(LPUART_PORT, LPUART_TX_PIN | LPUART_RX_PIN, GPIO_MODE_ALTERNATE);
+  GpioSetAF(LPUART_PORT, LPUART_TX_PIN | LPUART_RX_PIN, GPIO_AF_12);
+  // UART Congiguration
+  LPUART1->PRESC = 0;
+  LPUART1->BRR   = (uint32_t)(((uint64_t)(256) * SystemCoreClock) / LPUART_BAUD_RATE);
+  LPUART1->CR1   = USART_CR1_FIFOEN | USART_CR1_TE | USART_CR1_RE;
+  LPUART1->CR1 |= USART_CR1_UE;
+}
+
+void UartInit(void)
+{
+  RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN | RCC_APB2ENR_USART1EN;
+
+  // GPIO Configuration
+  GpioSetMode(UART_PORT, UART_TX_PIN | UART_RX_PIN, GPIO_MODE_ALTERNATE);
+  GpioSetAF(UART_PORT, UART_TX_PIN | UART_RX_PIN, GPIO_AF_7);
+  // UART Congiguration
+  USART1->PRESC = 0;
+  USART1->BRR   = SystemCoreClock / UART_BAUD_RATE;
+
+  USART1->CR1 = USART_CR1_FIFOEN | USART_CR1_RXNEIE | USART_CR1_TE | USART_CR1_RE;
+  USART1->CR1 |= USART_CR1_UE;
+}
+
+void UsartTransmitStr(USART_TypeDef *USARTx, uint8_t *str)
+{
+  while (*str != 0)
+  {
+    while ((USARTx->ISR & USART_ISR_TXE_TXFNF) != USART_ISR_TXE_TXFNF)
+    {
+      /* code */
+    }
+
+    USARTx->TDR = *str++;
+  }
+}
+
+void UsartTransmitByte(USART_TypeDef *USARTx, uint8_t value)
+{
+  while ((USARTx->ISR & USART_ISR_TXE_TXFNF) != USART_ISR_TXE_TXFNF)
+  {
+    /* code */
+  }
+  USARTx->TDR = value;
 }

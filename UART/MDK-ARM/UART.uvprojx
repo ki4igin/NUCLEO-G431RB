@@ -10,7 +10,7 @@
       <TargetName>UART</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6130001::V6.13.1::.\ARMCLANG</pCCUsed>
+      <pCCUsed>6120000::V6.12::.\ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -312,7 +312,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>2</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -336,9 +336,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>PREFETCH_ENABLE=0,INSTRUCTION_CACHE_ENABLE=1,DATA_CACHE_ENABLE=1,STM32G431xx</Define>
+              <Define>PREFETCH_ENABLE=0,INSTRUCTION_CACHE_ENABLE=1,DATA_CACHE_ENABLE=1,STM32G431xx,HSE_VALUE=24000000</Define>
               <Undefine></Undefine>
-              <IncludePath>..\code\Drivers\CMSIS\core\Include;..\code\Inc</IncludePath>
+              <IncludePath>..\code\Drivers\CMSIS\core\Include;..\code\Inc;..\code\Drivers\STM32G4\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -380,7 +380,7 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>code/cmsis</GroupName>
+          <GroupName>driver/cmsis</GroupName>
           <Files>
             <File>
               <FileName>system_stm32g4xx.c</FileName>
@@ -391,6 +391,26 @@
               <FileName>startup_stm32g431xx.s</FileName>
               <FileType>2</FileType>
               <FilePath>..\code\Drivers\CMSIS\Device\src\startup_stm32g431xx.s</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>drver/stm32g</GroupName>
+          <Files>
+            <File>
+              <FileName>stm32g4_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\Drivers\STM32G4\src\stm32g4_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32g4_rcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\Drivers\STM32G4\src\stm32g4_rcc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32g4_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\Drivers\STM32G4\src\stm32g4_uart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -411,6 +431,16 @@
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\code\Src\gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\Src\uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>rcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\Src\rcc.c</FilePath>
             </File>
           </Files>
         </Group>
