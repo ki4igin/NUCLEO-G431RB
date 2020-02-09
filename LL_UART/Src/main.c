@@ -99,15 +99,15 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_LPUART1_UART_Init();
-  MX_USART1_UART_Init();
-  MX_TIM6_Init();
+  // MX_USART1_UART_Init();
+  // MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   LL_USART_Enable(USART1);
-  LL_USART_Enable(LPUART1);
-  LL_TIM_EnableIT_UPDATE(TIM6);
+  // LL_USART_Enable(LPUART1);
+  // LL_TIM_EnableIT_UPDATE(TIM6);
   UsartTransmit(LPUART1, (uint8_t *)"Init Complete\n");
 
-  LL_TIM_EnableCounter(TIM6);
+  // LL_TIM_EnableCounter(TIM6);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -115,7 +115,7 @@ int main(void)
   while (1)
   {
     LedOn();
-    UsartTransmit(LPUART1, (uint8_t *)"Init Complete\n");
+    // UsartTransmit(LPUART1, (uint8_t *)"Init Complete\n");
     LL_mDelay(1000);
     LedOff();
     LL_mDelay(1000);
@@ -180,21 +180,21 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void Tim6Update_Callback(void)
-{
-  static uint32_t cnt1;
-  static uint8_t  cnt2;
+// void Tim6Update_Callback(void)
+// {
+//   static uint32_t cnt1;
+//   static uint8_t  cnt2;
 
-  // if (cnt1 == 125000)
-  // {
-  cnt1 = 0;
-  LL_USART_TransmitData8(USART1, cnt2++);
-  LL_USART_TransmitData8(USART1, cnt2++);
-  LL_USART_TransmitData8(USART1, cnt2++);
-  LL_USART_TransmitData8(USART1, cnt2++);
-  // }
-  // cnt1++;
-}
+//   // if (cnt1 == 125000)
+//   // {
+//   cnt1 = 0;
+//   LL_USART_TransmitData8(USART1, cnt2++);
+//   LL_USART_TransmitData8(USART1, cnt2++);
+//   LL_USART_TransmitData8(USART1, cnt2++);
+//   LL_USART_TransmitData8(USART1, cnt2++);
+//   // }
+//   // cnt1++;
+// }
 /* USER CODE END 4 */
 
 /**

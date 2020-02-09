@@ -29,6 +29,9 @@
         80
     ],
     "files.associations": {
+        "mdr32f9qx_config.h": "c",
+        "mdr32f9qx_rst_clk.h": "c",
+        "mdr32f9qx_uart.h": "c",
         "main.h": "c",
         "stm32g4xx.h": "c",
         "stm32g431xx.h": "c",
@@ -37,7 +40,11 @@
         "cmsis_compiler.h": "c",
         "cmsis_armclang.h": "c",
         "arm_compat.h": "c",
-        "system_stm32g4xx.h": "c"
+        "system_stm32g4xx.h": "c",
+        "gpio.h": "c",
+        "stm32g4xx_ll_gpio.h": "c",
+        "usart.h": "c",
+        "stm32g4xx_ll_usart.h": "c"
     },
     // "C_Cpp.loggingLevel": "Debug",
     "C_Cpp.clang_format_path": "C:\\toolchain\\clang-format.exe",    
