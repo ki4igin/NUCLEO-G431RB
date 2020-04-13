@@ -9,7 +9,8 @@
 // Private Macro ---------------------------------------------------------------
 
 // Private Variables -----------------------------------------------------------
-
+char *str    = "12345";
+char  str1[] = "12345";
 // Private Function prototypes -------------------------------------------------
 void SystemClock_Config(void);
 void Delay_ms(uint32_t delay);
@@ -17,6 +18,12 @@ void Delay_ms(uint32_t delay);
 // Functions -------------------------------------------------------------------
 int main(void)
 {
+  GPIOA->BSRR = str1[3];
+  GPIOA->BSRR = str[3];
+  str1[3]     = 'g';
+  str[3]      = 'g';
+  GPIOA->BSRR = str1[3];
+  GPIOA->BSRR = str[3];
   // MCU Configuration
   // Reset of all peripherals, Initializes the Flash interface and the Systick.
   RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
@@ -52,7 +59,7 @@ void Tim6Update_Callback(void)
 
 void Delay_ms(uint32_t delay)
 {
-  __IO uint32_t temp = SysTick->CTRL;
+  // __IO uint32_t temp = SysTick->CTRL;
   delay++;
   while (delay)
   {

@@ -1,2 +1,4 @@
 /MDK-ARM/*
-!*.uvprojx
+!/MDK-ARM/*.uvprojx
+!/MDK-ARM/*.s
+/build/*
