@@ -57,7 +57,7 @@ void MX_LPUART1_UART_Init(void)
   LL_GPIO_Init(LPUART1_RX_GPIO_Port, &GPIO_InitStruct);
 
   LPUART_InitStruct.PrescalerValue = LL_LPUART_PRESCALER_DIV1;
-  LPUART_InitStruct.BaudRate = 115200;
+  LPUART_InitStruct.BaudRate = 9375000;
   LPUART_InitStruct.DataWidth = LL_LPUART_DATAWIDTH_8B;
   LPUART_InitStruct.StopBits = LL_LPUART_STOPBITS_1;
   LPUART_InitStruct.Parity = LL_LPUART_PARITY_NONE;
@@ -113,7 +113,7 @@ void MX_USART1_UART_Init(void)
   LL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   USART_InitStruct.PrescalerValue = LL_USART_PRESCALER_DIV1;
-  USART_InitStruct.BaudRate = 11520000;
+  USART_InitStruct.BaudRate = 9375000;
   USART_InitStruct.DataWidth = LL_USART_DATAWIDTH_8B;
   USART_InitStruct.StopBits = LL_USART_STOPBITS_1;
   USART_InitStruct.Parity = LL_USART_PARITY_NONE;
