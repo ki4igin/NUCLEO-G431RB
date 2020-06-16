@@ -122,12 +122,14 @@ vpath %.c $(sort $(INCLUDES))
 vpath %.s $(sort $(INCLUDES))
 
 # Build all
-all: info $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).lss
+all: build
 	@echo
 	$(SZ) $(BUILD_DIR)/$(TARGET).elf -G
 	@echo
-	@echo $(BUILD_DIR)/$(TARGET).lss
+	@echo -e "\033[32;1;40m""Listing:""\033[0m" $(BUILD_DIR)/$(TARGET).lss
 
+build: info $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).lss
+	
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile	
 	$(CC) $(OBJECTS) $(LFLAGS) -o $@
 	
