@@ -336,9 +336,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>PREFETCH_ENABLE=0,INSTRUCTION_CACHE_ENABLE=1,DATA_CACHE_ENABLE=1,STM32G431xx,HSE_VALUE=24000000</Define>
+              <Define>PREFETCH_ENABLE=0,INSTRUCTION_CACHE_ENABLE=1,DATA_CACHE_ENABLE=1,STM32G431xx,HSE_VALUE=24000000,USE_FULL_LL_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\code\Drivers\CMSIS\core\Include;..\code\Inc;..\code\Drivers\STM32G4\inc</IncludePath>
+              <IncludePath>..\code\Drivers\CMSIS\core\Include;..\code\Inc;..\code\Drivers\STM32G4\inc;..\code\Drivers\LL</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -441,6 +441,21 @@
               <FileName>rcc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\code\Src\rcc.c</FilePath>
+            </File>
+            <File>
+              <FileName>tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\Src\tim.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>driver/LL</GroupName>
+          <Files>
+            <File>
+              <FileName>stm32g4xx_ll_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\Drivers\LL\stm32g4xx_ll_tim.c</FilePath>
             </File>
           </Files>
         </Group>

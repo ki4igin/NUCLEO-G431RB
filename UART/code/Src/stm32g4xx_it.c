@@ -4,6 +4,7 @@
 #include "stm32g4xx_it.h"
 #include "stm32g4xx.h"
 #include "uart.h"
+#include "tim.h"
 
 /******************************************************************************/
 /*           Cortex-M4 Processor Interruption and Exception Handlers          */
@@ -20,9 +21,9 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  while (1)
-  {
-  }
+    while (1)
+    {
+    }
 }
 
 /**
@@ -30,9 +31,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  while (1)
-  {
-  }
+    while (1)
+    {
+    }
 }
 
 /**
@@ -40,9 +41,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  while (1)
-  {
-  }
+    while (1)
+    {
+    }
 }
 
 /**
@@ -50,9 +51,9 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  while (1)
-  {
-  }
+    while (1)
+    {
+    }
 }
 
 /**
@@ -91,14 +92,25 @@ void SysTick_Handler(void)
 /******************************************************************************/
 void USART1_IRQHandler(void)
 {
-  if ((USART1->ISR & USART_ISR_RXNE) == USART_ISR_RXNE)
-  {
-    UsartTransmitByte(LPUART1, (uint8_t)USART1->RDR);
-  }
+    if ((USART1->ISR & USART_ISR_RXNE) == USART_ISR_RXNE)
+    {
+        UsartTransmitByte(LPUART1, (uint8_t)USART1->RDR);
+    }
 }
 /**
   * @brief This function handles TIM6 global interrupt, DAC1 and DAC3 channel underrun error interrupts.
   */
 void TIM6_DAC_IRQHandler(void)
 {
+
+}
+
+void TIM2_IRQHandler(void)
+{
+    if (LL_TIM_IsActiveFlag_UPDATE(TIM2))
+    {
+        LL_TIM_ClearFlag_UPDATE(TIM2);
+        Tim2Update_Callback();
+    }
+    
 }

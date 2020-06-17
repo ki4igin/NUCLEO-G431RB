@@ -23,6 +23,7 @@ C_DEFINES += PREFETCH_ENABLE=0
 C_DEFINES += INSTRUCTION_CACHE_ENABLE=1
 C_DEFINES += DATA_CACHE_ENABLE=1
 C_DEFINES += HSE_VALUE=24000000
+C_DEFINES += USE_FULL_LL_DRIVER
 
 
 # C includes
@@ -75,11 +76,11 @@ FLAGS += -ffunction-sections
 FLAGS += -fdata-sections
 FLAGS += -fshort-enums
 FLAGS += -funsigned-char
-FLAGS += -fshort-wchar
+# FLAGS += -fshort-wchar
 
 # FLAGS += -fpack-struct
 FLAGS += -std=gnu11
-FLAGS += -flto
+# FLAGS += -flto
 FLAGS += -Winline -Wall -Wextra -Wpedantic #-Werror 
 
 AFLAGS := $(FLAGS)
