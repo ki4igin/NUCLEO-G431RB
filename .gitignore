@@ -3,3 +3,4 @@
 !/UART
 !/LL_UART
 !/LL_SPI_HalfDuplex
+!/SpiHalfDuplex

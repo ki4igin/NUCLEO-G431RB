@@ -1,0 +1,40 @@
+{
+    "editor.minimap.enabled": false,
+    // "workbench.statusBar.visible": false,
+    "workbench.activityBar.visible": false,
+    "editor.folding": true,
+    "explorer.confirmDelete": false,
+    "files.autoSave": "afterDelay",
+    "editor.formatOnType": true,
+    "editor.formatOnSave": false,
+    "editor.formatOnPaste": true,
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": "entity.name.function.preprocessor",
+                "settings": {
+                    "foreground": "#adc586"
+                }
+            }
+        ]
+    },
+    "workbench.sideBar.location": "left",
+    "extensions.ignoreRecommendations": true,
+    "cortex-debug.enableTelemetry": false,
+    "cortex-debug.openocdPath": "D:/toolchain/OpenOCD-20190828-0.10.0/bin/openocd.exe",
+    "terminal.integrated.env.windows": {
+        "TERM": "xterm"
+    },   
+    "editor.rulers": [
+        80
+    ],
+    "files.associations": {
+        "*.h": "c",
+        "*.c": "c"
+    },
+    // "C_Cpp.loggingLevel": "Debug",
+    "C_Cpp.clang_format_path": "C:\\toolchain\\clang-format.exe", 
+    "C_Cpp.intelliSenseEngine": "Default" ,    
+    // "C_Cpp.experimentalFeatures": "Enabled",
+    
+}
