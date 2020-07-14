@@ -16,8 +16,8 @@
             ],
             "cStandard": "c11",
             "cppStandard": "c++17",
-            "compilerPath": "C:/toolchain/gcc-arm-none-eabi-9-2019-q4-major/bin/arm-none-eabi-gcc.exe",
-            "intelliSenseMode": "gcc-x64",            
+            "compilerPath": "C:/toolchain/gcc-arm-none-eabi-9-2020-q2-update-win32/bin/arm-none-eabi-gcc.exe",
+            "intelliSenseMode": "gcc-arm",
             "browse": {
                 "limitSymbolsToIncludedHeaders": true
             }

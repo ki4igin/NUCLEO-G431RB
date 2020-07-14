@@ -9,14 +9,20 @@
     "editor.formatOnSave": false,
     "editor.formatOnPaste": true,
     "editor.tokenColorCustomizations": {
-        "textMateRules": [
-            {
-                "scope": "entity.name.function.preprocessor",
-                "settings": {
-                    "foreground": "#adc586"
+        "[Default Dark+]": {
+            "textMateRules": [
+                {
+                    "scope": [
+                        "entity.name.function.preprocessor",
+                        "meta.preprocessor",
+                        "meta.block",
+                    ],
+                    "settings": {
+                        "foreground": "#adc586"
+                    }
                 }
-            }
-        ]
+            ]
+        },
     },
     "workbench.sideBar.location": "left",
     "extensions.ignoreRecommendations": true,
@@ -24,7 +30,7 @@
     "cortex-debug.openocdPath": "D:/toolchain/OpenOCD-20190828-0.10.0/bin/openocd.exe",
     "terminal.integrated.env.windows": {
         "TERM": "xterm"
-    },   
+    },
     "editor.rulers": [
         80
     ],
@@ -33,8 +39,5 @@
         "*.c": "c"
     },
     // "C_Cpp.loggingLevel": "Debug",
-    "C_Cpp.clang_format_path": "C:\\toolchain\\clang-format.exe", 
-    "C_Cpp.intelliSenseEngine": "Default" ,    
-    // "C_Cpp.experimentalFeatures": "Enabled",
-    
+    "C_Cpp.clang_format_path": "C:\\toolchain\\clang-format.exe",
 }
