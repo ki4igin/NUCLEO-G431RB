@@ -127,7 +127,7 @@ __STATIC_FORCEINLINE void GpioSetSpeed(GPIO_TypeDef*      GPIOx,
     temp += (pins & (1U << i)) << i;
   }
 
-  MODIFY_REG(GPIOx->MODER,
+  MODIFY_REG(GPIOx->OSPEEDR,
              (GPIO_OSPEEDR_OSPEED0 * temp),
              (speed * temp));
 }
