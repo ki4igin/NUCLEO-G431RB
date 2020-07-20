@@ -41,19 +41,6 @@ int main(void)
   // Infinite loop
   while (1)
   {
-    // if (flag.rx)
-    // {
-    //   flag.rx = 0;
-
-    //   uint16_t crc16 = Crc16(rxBuf, cntRx);
-    //   uint16_t txData = __REV16(crc16);
-
-    //   UsartSendArrayIT(LPUART1, (uint8_t*)&txData, 2);
-    //   SET_BIT(LPUART1->CR1, USART_CR1_RXNEIE);
-    //   //       Delay_ms(1);
-    //   cntRx = 0;
-    //   //	UsartSendStrIT(LPUART1, (uint8_t *)"1\n");
-    // }
     ModBusProcess();
     LedOn();
     Delay_ms(1000);
@@ -61,18 +48,6 @@ int main(void)
     Delay_ms(1000);
   }
 }
-
-// void Tim2Update_Callback(void)
-// {
-//   static uint16_t cnt;
-//   UsartSendByte(LPUART1, (uint8_t)(cnt >> 8));
-//   UsartSendByte(LPUART1, (uint8_t)cnt);
-//   cnt++;
-// }
-
-// void Tim6Update_Callback(void)
-// {
-// }
 
 void Delay_ms(uint32_t delay)
 {

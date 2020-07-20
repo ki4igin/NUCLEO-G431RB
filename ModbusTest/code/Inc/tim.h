@@ -36,7 +36,7 @@
 /* USER CODE END Private defines */
 
 void TIM2_Init(void);
-void TIM6_Init(void);
+void TIM4_Init(void);
 // void Tim2Update_Callback(void);
 // void Tim6Update_Callback(void);
 

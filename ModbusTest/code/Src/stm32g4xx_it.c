@@ -101,12 +101,12 @@ void SysTick_Handler(void)
 void LPUART1_IRQHandler(void)
 {
   if (((LPUART1->ISR & USART_ISR_RXNE) == USART_ISR_RXNE) && ((LPUART1->CR1 & USART_CR1_RXNEIE) == USART_CR1_RXNEIE))
-  {    
+  {
     Lpuart1Rx_Callback();
   }
   if (((LPUART1->ISR & USART_ISR_TC) == USART_ISR_TC) && ((LPUART1->CR1 & USART_CR1_TCIE) == USART_CR1_TCIE))
-  {    
-    LPUART1->ICR |= USART_ICR_TCCF;		
+  {
+    LPUART1->ICR |= USART_ICR_TCCF;
   }
   if (((LPUART1->ISR & USART_ISR_TXE) == USART_ISR_TXE) && ((LPUART1->CR1 & USART_CR1_TXEIE) == USART_CR1_TXEIE))
   {
@@ -115,17 +115,22 @@ void LPUART1_IRQHandler(void)
   if ((LPUART1->ISR & USART_ISR_ORE) == USART_ISR_ORE)
   {
     LPUART1->ICR |= USART_ICR_ORECF;
-  }    
+  }
 }
 /**
-  * @brief This function handles TIM6 global interrupt, DAC1 and DAC3 channel underrun error interrupts.
+  * @brief This function handles TIM4 global interrupt, DAC1 and DAC3 channel underrun error interrupts.
   */
-void TIM6_DAC_IRQHandler(void)
+void TIM4_IRQHandler(void)
 {
-  if (LL_TIM_IsActiveFlag_UPDATE(TIM6))
+  if (LL_TIM_IsActiveFlag_UPDATE(TIM4))
   {
-    LL_TIM_ClearFlag_UPDATE(TIM6);
-    Tim6Update_Callback();
+    LL_TIM_ClearFlag_UPDATE(TIM4);
+    Tim4Update_Callback();
+  }
+  if (LL_TIM_IsActiveFlag_CC1(TIM4))
+  {
+    LL_TIM_ClearFlag_CC1(TIM4);
+    Tim4CC1_Callback();
   }
 }
 

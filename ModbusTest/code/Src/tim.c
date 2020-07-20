@@ -33,8 +33,7 @@ void TIM2_Init(void)
   RCC->APB1ENR1 |= RCC_APB1ENR1_TIM2EN;
 
   /* TIM2 interrupt Init */
-  NVIC_SetPriority(TIM2_IRQn,
-                   NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
+  NVIC_SetPriority(TIM2_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
   NVIC_EnableIRQ(TIM2_IRQn);
 
   TIM_InitStruct.Prescaler   = 0;
@@ -46,27 +45,37 @@ void TIM2_Init(void)
   LL_TIM_DisableMasterSlaveMode(TIM2);
 }
 
-void TIM6_Init(void)
+void TIM4_Init(void)
 {
   LL_TIM_InitTypeDef TIM_InitStruct = {0};
+  LL_TIM_OC_InitTypeDef TIM_OC_InitStruct = {0};
 
   /* Peripheral clock enable */
-  RCC->APB1ENR1 |= RCC_APB1ENR1_TIM6EN;
+  RCC->APB1ENR1 |= RCC_APB1ENR1_TIM4EN;
 
   /* TIM2 interrupt Init */
-  NVIC_SetPriority(TIM6_DAC_IRQn,
-                   NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
-  NVIC_EnableIRQ(TIM6_DAC_IRQn);
+  NVIC_SetPriority(TIM4_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
+  NVIC_EnableIRQ(TIM4_IRQn);
 
   TIM_InitStruct.Prescaler   = 72 - 1;
   TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
   TIM_InitStruct.Autoreload  = 347 - 1;
-  LL_TIM_Init(TIM6, &TIM_InitStruct);
-  LL_TIM_ClearFlag_UPDATE(TIM6);
-  LL_TIM_DisableARRPreload(TIM6);
-  LL_TIM_SetTriggerOutput(TIM6, LL_TIM_TRGO_UPDATE);
-  LL_TIM_DisableMasterSlaveMode(TIM6);
-  LL_TIM_EnableIT_UPDATE(TIM6);
+  LL_TIM_Init(TIM4, &TIM_InitStruct);
+
+  TIM_OC_InitStruct.OCMode       = LL_TIM_OCMODE_FROZEN;
+  TIM_OC_InitStruct.OCState      = LL_TIM_OCSTATE_DISABLE;
+  TIM_OC_InitStruct.OCNState     = LL_TIM_OCSTATE_DISABLE;
+  TIM_OC_InitStruct.CompareValue = 200;
+  TIM_OC_InitStruct.OCPolarity   = LL_TIM_OCPOLARITY_HIGH;
+  LL_TIM_OC_Init(TIM4, LL_TIM_CHANNEL_CH1, &TIM_OC_InitStruct);
+  LL_TIM_OC_DisableFast(TIM4, LL_TIM_CHANNEL_CH1);
+
+  LL_TIM_ClearFlag_UPDATE(TIM4);
+  LL_TIM_DisableARRPreload(TIM4);
+  LL_TIM_SetTriggerOutput(TIM4, LL_TIM_TRGO_UPDATE);
+  LL_TIM_DisableMasterSlaveMode(TIM4);
+  LL_TIM_EnableIT_UPDATE(TIM4);
+  LL_TIM_EnableIT_CC1(TIM4);
 }
 /* USER CODE BEGIN 1 */
 

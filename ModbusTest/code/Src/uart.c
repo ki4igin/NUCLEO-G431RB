@@ -19,6 +19,7 @@
 UartFlags_t uartFlags = {0};
 
 static uint8_t  cntRx     = {0};
+static uint8_t  cnt15t    = {0};
 static uint8_t  txBufSize = {0};
 static uint8_t *ptxBuf;
 static uint8_t *prxBuf;
@@ -31,8 +32,7 @@ void LPUartInit(void)
   RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
 
   /* LPUSART interrupt Init */
-  NVIC_SetPriority(LPUART1_IRQn,
-                   NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
+  NVIC_SetPriority(LPUART1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
   NVIC_EnableIRQ(LPUART1_IRQn);
 
   // GPIO Configuration
@@ -40,9 +40,8 @@ void LPUartInit(void)
   GpioSetAF(LPUART_PORT, LPUART_TX_PIN | LPUART_RX_PIN, GPIO_AF_12);
   // UART Congiguration
   LPUART1->PRESC = 0;
-  LPUART1->BRR =
-      (uint32_t)(((uint64_t)(256) * SystemCoreClock) / LPUART_BAUD_RATE);
-  LPUART1->CR1 = USART_CR1_TE | USART_CR1_RE;
+  LPUART1->BRR   = (uint32_t)(((uint64_t)(256) * SystemCoreClock) / LPUART_BAUD_RATE);
+  LPUART1->CR1   = USART_CR1_M0 | USART_CR1_PCE | USART_CR1_TE | USART_CR1_RE;
   LPUART1->CR1 |= USART_CR1_UE;
 }
 
@@ -57,8 +56,7 @@ void UartInit(void)
   USART1->PRESC = 0;
   USART1->BRR   = SystemCoreClock / UART_BAUD_RATE;
 
-  USART1->CR1 =
-      USART_CR1_FIFOEN | USART_CR1_RXNEIE | USART_CR1_TE | USART_CR1_RE;
+  USART1->CR1 = USART_CR1_FIFOEN | USART_CR1_RXNEIE | USART_CR1_TE | USART_CR1_RE;
   USART1->CR1 |= USART_CR1_UE;
 }
 
@@ -125,17 +123,17 @@ void UsartReceiveIT(USART_TypeDef *USARTx, uint8_t *pbuf)
   {
     return;
   }
-  
+
   prxBuf = pbuf;
   USARTx->CR1 |= USART_CR1_RXNEIE;
 }
 
 void Lpuart1Rx_Callback()
 {
-  TIM6->CNT = 0;
+  TIM4->CNT = 0;
   if (!cntRx)
   {
-    TIM6->CR1 |= TIM_CR1_CEN;
+    TIM4->CR1 |= TIM_CR1_CEN;
   }
 
   *prxBuf++ = LPUART1->RDR;
@@ -155,14 +153,21 @@ void Lpuart1Tx_Callback()
   }
 }
 
-void Tim6Update_Callback()
+void Tim4Update_Callback()
 {
-  CLEAR_BIT(TIM6->CR1, TIM_CR1_CEN);
+  CLEAR_BIT(TIM4->CR1, TIM_CR1_CEN);
   CLEAR_BIT(LPUART1->CR1, USART_CR1_RXNEIE);
 
   uartFlags.rx     = 1;
-  uartFlags.cntRx = cntRx;
+  uartFlags.cntRx  = cntRx;
+  uartFlags.cnt15t = cnt15t;
 
-  cntRx = 0;
+  cnt15t = 0;
+  cntRx  = 0;
+}
+
+void Tim4CC1_Callback()
+{
+  cnt15t++;
 }
 // End File --------------------------------------------------------------------
