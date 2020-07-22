@@ -1,0 +1,57 @@
+{
+	// Place your Рабочая область rb170_LAST snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"New File *.h  ": {
+		"scope": "c",
+		"prefix": "NewFileH",
+		"body": [
+			"#ifndef __${TM_FILENAME_BASE/(.*)/${1:/upcase}/}_H",
+			"#define __${TM_FILENAME_BASE/(.*)/${1:/upcase}/}_H\n",
+			"// Includes --------------------------------------------------------------------",
+			"${1}",
+			"// Typedef ---------------------------------------------------------------------",
+			"${2}",
+			"// Macro -----------------------------------------------------------------------",
+			"${3}",
+			"// Variables -------------------------------------------------------------------",
+			"${4}",
+			"// Function prototypes ---------------------------------------------------------",
+			"${5}",
+			"// Inline Functions ------------------------------------------------------------",
+			"${0}",
+			"#endif\n"
+		]
+	},
+	"New File *.c  ": {
+		"scope": "c",
+		"prefix": "NewFileC",
+		"body": [
+			"// Includes --------------------------------------------------------------------",
+			"#include \"${TM_FILENAME_BASE}.h\"\n",
+			"// Private Typedef -------------------------------------------------------------",
+			"${1}",
+			"// Private Macro ---------------------------------------------------------------",
+			"${2}",
+			"// Private Variables -----------------------------------------------------------",
+			"${3}",
+			"// Private Function prototypes -------------------------------------------------",
+			"${4}",
+			"// Functions -------------------------------------------------------------------",
+			"${0}\n",			
+		]
+	}
+}
