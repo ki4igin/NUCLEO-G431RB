@@ -65,6 +65,7 @@ MCU := $(CPU) -mthumb $(FPU)
 
 # Optimization and Debug level
 ifeq ($(DEBUG), 1)
+C_DEFINES += DEBUG
 OPT := -O1 -g -gdwarf-2
 else
 OPT := -Os
@@ -80,7 +81,7 @@ FLAGS += -funsigned-char
 # Peels loops for which there is enough information that they do not roll much
 # (from profile feedback or static analysis). It also turns on complete loop
 # peeling (i.e. complete removal of loops with small constant number of iterations).
-FLAGS += -fpeel-loops # Работает на O1 и выше
+FLAGS += -fpeel-loops # пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ O1 пїЅ пїЅпїЅпїЅпїЅ
 
 
 # FLAGS += -fshort-wchar

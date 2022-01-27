@@ -11,6 +11,7 @@
                 "INSTRUCTION_CACHE_ENABLE=1",
                 "DATA_CACHE_ENABLE=1",
                 "HSE_VALUE=24000000",
+                "DEBUG",
                 "USE_FULL_LL_DRIVER"
 
             ],

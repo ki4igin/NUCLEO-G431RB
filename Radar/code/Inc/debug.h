@@ -1,5 +1,5 @@
-#ifndef __UART_H
-#define __UART_H
+#ifndef __DEBUG_H
+#define __DEBUG_H
 
 // Includes --------------------------------------------------------------------
 #include "stm32g4xx.h"
@@ -10,12 +10,13 @@
 // Variables -------------------------------------------------------------------
 
 // Function prototypes ---------------------------------------------------------
-void LPUartInit(void);
-void UartInit(void);
-void UsartSendStr(USART_TypeDef *USARTx, uint8_t *str);
-void UsartSendArray(USART_TypeDef *USARTx, uint8_t *pbuf, uint8_t len);
-void UsartSendByte(USART_TypeDef *USARTx, uint8_t data);
-void UsartSendWord(USART_TypeDef *USARTx, uint16_t data);
+void DebugSendMessage(char *str);
+void DebugSendArray(void *pbuf, int len);
+void DebugSendWord(int data);
+
+#define Error_Handler() _Error_Handler(__FILE__, __LINE__)
+void _Error_Handler(char *, int);
+void Delay_ms(unsigned long delay);
 
 // Inline Functions ------------------------------------------------------------
 
