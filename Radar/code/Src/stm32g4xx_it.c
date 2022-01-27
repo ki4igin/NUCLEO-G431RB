@@ -92,10 +92,7 @@ void SysTick_Handler(void)
 /******************************************************************************/
 void USART1_IRQHandler(void)
 {
-    if ((USART1->ISR & USART_ISR_RXNE) == USART_ISR_RXNE)
-    {
-        UsartTransmitByte(LPUART1, (uint8_t)USART1->RDR);
-    }
+
 }
 /**
   * @brief This function handles TIM6 global interrupt, DAC1 and DAC3 channel underrun error interrupts.

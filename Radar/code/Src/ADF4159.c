@@ -5,6 +5,8 @@
 #include "gpio.h"
 #include "stm32g4xx_ll_spi.h"
 #include "assert.h"
+#include "uart.h"
+#include "debug.h"
 
 // Private Typedef -------------------------------------------------------------
 typedef struct
@@ -137,25 +139,32 @@ static_assert(sizeof(ADF4159_REGS_t) == 32, "Error");
 
 // Private Variables -----------------------------------------------------------
 // clang-format off
-const ADF4159_REGS_t reg_init = {
-    .r0 = {.ctrl_bits = 0, .ramp_on = 1, 0},
-    .r1 = {.ctrl_bits = 1, 0},
-    .r2 = {.ctrl_bits = 2, 0},
-    .r3 = {.ctrl_bits = 3, 0},
-    .r4 = {.ctrl_bits = 4, 0},
-    .r5 = {.ctrl_bits = 5, 0},
-    .r6 = {.ctrl_bits = 6, 0},
-    .r7 = {.ctrl_bits = 7, 0}
+// REF: Doubler disabled, Use divide by 2, R-counter = 4
+// Main divider: INT = 76, FRAC = 26954954
+// Use divede
+ADF4159_REGS_t reg_init = {
+    .r0 = {.ctrl_bits = 0, .ramp_on = 1, .int_value = 76, .msb_frac_value = (26954954 >> 13), .mux_ctrl = 3},
+    .r1 = {.ctrl_bits = 1, .lsb_frac_value = (26954954 & 0x1FFF), .phase_adjust = 0, .phase_value = 0},
+    .r2 = {.ctrl_bits = 2, .csr = 0, .cp_current_setting = 0, .prescaler = 0, .rdiv2 = 0, .ref_doubler = 0, .r_counter = 8, .clk1_div_value = 4095},
+    .r3 = {.ctrl_bits = 3, .neg_bleed_en = 0, .neg_bleed_current = 0, .lol = 0, .n_sel = 1, .sd_reset = 0, .ramp_mode = 0, .pd_polarity = 1, .power_down = 0, .cp_3state = 0, .counter_reset = 0},
+    .r4 = {.ctrl_bits = 4, .le_sel = 0, .sigma_delta_mod_mode = 0, .ramp_status = 0, .clk_div_mode = 0, .clk2_div_value = 0, .clk_div_sel = 0},
+    .r5 = {.ctrl_bits = 5, .txdata_invert = 0, .tx_ramp_clk = 0, .parabolic_ramp = 0, .interrupt = 0, .fsk_ramp = 0, .dual_ramp = 0, .dev_sel = 0, .deviation_offset_word = 8, .deviation_word = 10},
+    .r6 = {.ctrl_bits = 6, .step_sel = 0, .step_word = 20},
+    // .r6 = {.ctrl_bits = 6},
+    .r7 = {.ctrl_bits = 7, .txdata_trigger_delay = 0, .tri_delay = 0, .sing_full_tri = 0, .txdata_trigger = 0, .fast_ramp = 0, .ramp_delay_fl = 0, .ramp_delay = 0, .del_clk_sel = 0, .del_start_en = 0, .delay_start_word = 0}
 };
 // clang-format on
+static_assert(sizeof(reg_init) == 32, "Error");
 
 // Private Function prototypes -------------------------------------------------
+void ADF4159_WriteReg(uint32_t data);
+void Delay_ms(uint32_t delay);
 
 // Functions -------------------------------------------------------------------
-void ADF4159_Init(uint32_t data)
+void ADF4159_Init()
 {
     // GPIO Init
-    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN | RCC_AHB2ENR_GPIOBEN;   
+    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOCEN | RCC_AHB2ENR_GPIOBEN;
 
     GpioSetMode(PLL_3STATE_GPIO_Port, PLL_3STATE_Pin, GPIO_MODE_OUTPUT);
     GpioSetMode(PLL_CE_GPIO_Port, PLL_CE_Pin, GPIO_MODE_OUTPUT);
@@ -169,6 +178,44 @@ void ADF4159_Init(uint32_t data)
 
     MX_SPI2_Init();
     LL_SPI_Enable(BOARD_SPI);
+
+    ADF4159_R7_t r7 = {.ctrl_bits = 7};
+    ADF4159_WriteReg(*(uint32_t*)&r7);
+
+    ADF4159_R6_t r6 = {.ctrl_bits = 6};
+    ADF4159_WriteReg(*(uint32_t*)&r6);
+    r6.step_sel = 1;
+    ADF4159_WriteReg(*(uint32_t*)&r6);
+
+    ADF4159_R5_t r5 = {.ctrl_bits = 5};
+    ADF4159_WriteReg(*(uint32_t*)&r5);
+    r5.dev_sel = 1;
+    ADF4159_WriteReg(*(uint32_t*)&r5);
+
+    ADF4159_R4_t r4 = {.ctrl_bits = 4};
+    ADF4159_WriteReg(*(uint32_t*)&r4);
+    r4.clk_div_sel = 1;
+    ADF4159_WriteReg(*(uint32_t*)&r4);
+
+    ADF4159_R3_t r3 = {.ctrl_bits = 3};
+    ADF4159_WriteReg(*(uint32_t*)&r3);
+
+    ADF4159_R2_t r2 = {.ctrl_bits = 2};
+    ADF4159_WriteReg(*(uint32_t*)&r2);
+
+    ADF4159_R1_t r1 = {.ctrl_bits = 1};
+    ADF4159_WriteReg(*(uint32_t*)&r1);
+    DebugSendArray(&r1, 4);
+
+    ADF4159_R0_t r0 = {.ctrl_bits = 0, .mux_ctrl = 0};
+    ADF4159_WriteReg(*(uint32_t*)&r0);
+
+    uint32_t* pointer = (uint32_t*)&reg_init.r7;
+    for (uint32_t i = 0; i < 8; i++)
+    {
+        DebugSendArray(pointer--, 4);
+        ADF4159_WriteReg(*pointer--);
+    }
 }
 
 void ADF4159_WriteReg(uint32_t data)
@@ -180,14 +227,14 @@ void ADF4159_WriteReg(uint32_t data)
         /* code */
     }
 
-    LL_SPI_TransmitData16(BOARD_SPI, data);
+    LL_SPI_TransmitData16(BOARD_SPI, (uint16_t)(data >> 16));
 
     while (LL_SPI_IsActiveFlag_TXE(BOARD_SPI) == 0)
     {
         /* code */
     }
 
-    LL_SPI_TransmitData16(BOARD_SPI, data);
+    LL_SPI_TransmitData16(BOARD_SPI, (uint16_t)data);
 
     while (LL_SPI_IsActiveFlag_BSY(BOARD_SPI) == 1)
     {
