@@ -49,6 +49,8 @@ int main(void)
     LL_TIM_EnableIT_UPDATE(TIM6);
     LL_TIM_EnableCounter(TIM6);
 
+    GpioOutSet(RF_3V3_EN_GPIO_Port, RF_3V3_EN_Pin);
+
     // Infinite loop
     while (1)
     {      
