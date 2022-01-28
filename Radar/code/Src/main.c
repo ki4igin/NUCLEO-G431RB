@@ -51,24 +51,56 @@ int main(void)
 
     // Infinite loop
     while (1)
-    {
+    {      
+
+        if (READ_BIT(LPUART1->ISR, USART_ISR_RXFT) == (USART_ISR_RXFT))
+        {
+            uint32_t cmd  = 0;
+            uint8_t* pcmd = (uint8_t*)&cmd;
+            for (uint32_t i = 0; i < 4; i++)
+            {
+                *pcmd++ = LPUART1->RDR;
+            }
+            CmdWork(__REV(cmd));
+        }
     }
 }
 
 void CmdWork(uint32_t cmd)
 {
-    switch (__REV(cmd))
+    static uint8_t isPLLData = 0;
+
+    if (isPLLData)
     {
-        case 0x626c696b:  // blik
-            break;
-        case 0x706c7772:  // plwr
-            break;
-        case 0x71776572:  // qwer
-            NVIC_SystemReset();
-            break;
-        default:
-            DebugSendArray(&cmd, sizeof(cmd));
-            break;
+        DebugSendArray(&cmd, sizeof(cmd));
+        ADF4159_WriteReg(cmd);
+        isPLLData = 0;
+    }
+    else
+    {
+        switch (cmd)
+        {
+            case 0x626c696b:  // blik
+                Led1On();
+                Delay_ms(200);
+                LedAllOff();
+                Led2On();
+                Delay_ms(200);
+                LedAllOff();
+                Led3On();
+                Delay_ms(200);
+                LedAllOff();
+                break;
+            case 0x706c7772:  // plwr
+                isPLLData = 1;
+                break;
+            case 0x71776572:  // qwer
+                NVIC_SystemReset();
+                break;
+            default:
+                DebugSendArray(&cmd, sizeof(cmd));
+                break;
+        }
     }
 }
 

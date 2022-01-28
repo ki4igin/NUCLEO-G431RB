@@ -90,9 +90,16 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32g4xx.s).                    */
 /******************************************************************************/
+void LPUART1_IRQHandler(void)
+{
+    if (READ_BIT(LPUART1->ISR, USART_ISR_RXFT) == (USART_ISR_RXFT))
+    {
+        // LPUartThreshold_Callback();
+    }
+}
+
 void USART1_IRQHandler(void)
 {
-
 }
 /**
   * @brief This function handles TIM6 global interrupt, DAC1 and DAC3 channel underrun error interrupts.
@@ -113,5 +120,4 @@ void TIM2_IRQHandler(void)
         LL_TIM_ClearFlag_UPDATE(TIM2);
         Tim2Update_Callback();
     }
-    
 }

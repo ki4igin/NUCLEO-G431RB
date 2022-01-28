@@ -31,6 +31,12 @@ void LPUartInit(void)
     LPUART1->PRESC = 0;
     LPUART1->BRR   = (uint32_t)(((uint64_t)(256) * SystemCoreClock) / LPUART_BAUD_RATE);
     LPUART1->CR1   = USART_CR1_FIFOEN | USART_CR1_TE | USART_CR1_RE;
+    LPUART1->CR3   = USART_CR3_RXFTCFG_1;
+
+    /* USART interrupt Init */
+    // NVIC_SetPriority(LPUART1_IRQn, _EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
+    // NVIC_EnableIRQ(LPUART1_IRQn);
+
     LPUART1->CR1 |= USART_CR1_UE;
 }
 
