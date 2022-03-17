@@ -53,8 +53,7 @@ int main(void)
 
     // Infinite loop
     while (1)
-    {      
-
+    {
         if (READ_BIT(LPUART1->ISR, USART_ISR_RXFT) == (USART_ISR_RXFT))
         {
             uint32_t cmd  = 0;
@@ -63,7 +62,7 @@ int main(void)
             {
                 *pcmd++ = LPUART1->RDR;
             }
-            CmdWork(__REV(cmd));
+            CmdWork(cmd);
         }
     }
 }
@@ -80,7 +79,7 @@ void CmdWork(uint32_t cmd)
     }
     else
     {
-        switch (cmd)
+        switch (__REV(cmd))
         {
             case 0x626c696b:  // blik
                 Led1On();
