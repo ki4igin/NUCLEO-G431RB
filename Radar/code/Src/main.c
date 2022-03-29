@@ -50,12 +50,15 @@ int main(void)
     LL_TIM_EnableCounter(TIM6);
 
     GpioOutSet(RF_3V3_EN_GPIO_Port, RF_3V3_EN_Pin);
+    GpioOutSet(PLL_CLK_EN_GPIO_Port, PLL_CLK_EN_Pin);
 
     // Infinite loop
     while (1)
     {
+        static uint16_t timaut_cnt = 0;
         if (READ_BIT(LPUART1->ISR, USART_ISR_RXFT) == (USART_ISR_RXFT))
         {
+            timaut_cnt    = 0;
             uint32_t cmd  = 0;
             uint8_t* pcmd = (uint8_t*)&cmd;
             for (uint32_t i = 0; i < 4; i++)
@@ -64,6 +67,20 @@ int main(void)
             }
             CmdWork(cmd);
         }
+        if (READ_BIT(LPUART1->ISR, USART_ISR_RXNE) == (USART_ISR_RXNE))
+        {
+            timaut_cnt++;
+        }
+        if (timaut_cnt >= 9999)
+        {
+            while (READ_BIT(LPUART1->ISR, USART_ISR_RXNE) == (USART_ISR_RXNE))
+            {
+                volatile uint8_t temp = LPUART1->RDR;
+                (void)temp;
+            }
+            timaut_cnt = 0;
+        }
+        
     }
 }
 

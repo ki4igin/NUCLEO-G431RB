@@ -21,6 +21,8 @@ void GpioInit(void)
 
   GpioSetMode(RF_3V3_EN_GPIO_Port, RF_3V3_EN_Pin, GPIO_MODE_OUTPUT);
 
+  GpioSetMode(PLL_CLK_EN_GPIO_Port, PLL_CLK_EN_Pin, GPIO_MODE_OUTPUT);
+
   // GpioSetMode(RFE_PWR1_GPIO_Port, RFE_PWR1_Pin, GPIO_MODE_OUTPUT);
   // GpioSetMode(RFE_PWR_GPIO_Port, RFE_PWR1_Pin, GPIO_MODE_OUTPUT);
   // GpioSetMode(RFE_PWR1_GPIO_Port, RFE_PWR1_Pin, GPIO_MODE_OUTPUT);
