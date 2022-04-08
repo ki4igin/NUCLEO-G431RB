@@ -145,14 +145,14 @@ static_assert(sizeof(ADF4159_REGS_t) == 32, "Error");
 ADF4159_REGS_t reg_init = {
     .r0 = {
         .ctrl_bits = 0, 
-        .ramp_on = 1, 
-        .int_value = 76, 
-        .msb_frac_value = (26954954 >> 13), 
-        .mux_ctrl = 3
+        .ramp_on = 0, 
+        .int_value = 300, 
+        .msb_frac_value = 0, 
+        .mux_ctrl = 0xE
     },
     .r1 = {
         .ctrl_bits = 1, 
-        .lsb_frac_value = (26954954 & 0x1FFF), 
+        .lsb_frac_value = 0, 
         .phase_adjust = 0, 
         .phase_value = 0
     },    
@@ -164,17 +164,17 @@ ADF4159_REGS_t reg_init = {
         .rdiv2 = 0, 
         .ref_doubler = 0, 
         .r_counter = 8, 
-        .clk1_div_value = 4095
+        .clk1_div_value = 0
     },
     .r3 = {
         .ctrl_bits = 3, 
         .neg_bleed_en = 0, 
         .neg_bleed_current = 0, 
         .lol = 0, 
-        .n_sel = 1, 
+        .n_sel = 0, 
         .sd_reset = 0, 
         .ramp_mode = 0, 
-        .pd_polarity = 1, 
+        .pd_polarity = 0, 
         .power_down = 0, 
         .cp_3state = 0, 
         .counter_reset = 0
@@ -197,13 +197,13 @@ ADF4159_REGS_t reg_init = {
         .fsk_ramp = 0, 
         .dual_ramp = 0, 
         .dev_sel = 0, 
-        .deviation_offset_word = 8, 
-        .deviation_word = 10
+        .deviation_offset_word = 0, 
+        .deviation_word = 0
     },    
     .r6 = {
         .ctrl_bits = 6, 
         .step_sel = 0, 
-        .step_word = 20
+        .step_word = 0
     },
     /* 
     .r6 = {
