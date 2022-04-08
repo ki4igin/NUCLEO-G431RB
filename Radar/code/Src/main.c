@@ -52,6 +52,8 @@ int main(void)
     GpioOutSet(RF_3V3_EN_GPIO_Port, RF_3V3_EN_Pin);
     GpioOutSet(PLL_CLK_EN_GPIO_Port, PLL_CLK_EN_Pin);
 
+    GpioOutReset(RFE_PWR_GPIO_Port, RFE_PWR_Pin);
+
     // Infinite loop
     while (1)
     {
@@ -80,11 +82,19 @@ int main(void)
             }
             timaut_cnt = 0;
         }
-        
     }
 }
 
-void CmdWork(uint32_t cmd)
+// enum cmd
+// {
+//     blik = (("blik"[0] << 24) + ("blik"[1] << 16) + ("blik"[2] << 8) + "blik"[3])
+// };
+
+#define cmd2uint(char1, char2, char3, char4) ((char1 << 24) + (char2 << 16) + (char3 << 8) + char4)
+// #define cmd2uint(char1) ('\''char1'\'')
+
+void
+CmdWork(uint32_t cmd)
 {
     static uint8_t isPLLData = 0;
 
@@ -98,7 +108,7 @@ void CmdWork(uint32_t cmd)
     {
         switch (__REV(cmd))
         {
-            case 0x626c696b:  // blik
+            case cmd2uint('b', 'l', 'i', 'k'):  // blik
                 Led1On();
                 Delay_ms(200);
                 LedAllOff();
@@ -111,6 +121,9 @@ void CmdWork(uint32_t cmd)
                 break;
             case 0x706c7772:  // plwr
                 isPLLData = 1;
+                break;
+            case 0x706c7771:  // rfon
+
                 break;
             case 0x71776572:  // qwer
                 NVIC_SystemReset();
