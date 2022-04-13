@@ -52,7 +52,8 @@ int main(void)
     GpioOutSet(RF_3V3_EN_GPIO_Port, RF_3V3_EN_Pin);
     GpioOutSet(PLL_CLK_EN_GPIO_Port, PLL_CLK_EN_Pin);
 
-    GpioOutReset(RFE_PWR_GPIO_Port, RFE_PWR_Pin);
+    ADF4159_PowerDown();
+    RfOff();
 
     // Infinite loop
     while (1)
@@ -119,11 +120,24 @@ CmdWork(uint32_t cmd)
                 Delay_ms(200);
                 LedAllOff();
                 break;
-            case 0x706c7772:  // plwr
+            case cmd2uint('p', 'l', 'w', 'r'):  // plwr
                 isPLLData = 1;
                 break;
-            case 0x706c7771:  // rfon
+            case cmd2uint('r', 'f', 'o', 'n'):  // rfon
+                Led1On();
+                Delay_ms(200);
+                LedAllOff();
 
+                ADF4159_PowerUp();
+                RfOn();
+                break;
+            case cmd2uint('r', 'f', 'o', 'f'):  // rfof
+                Led2On();
+                Delay_ms(200);
+                LedAllOff();
+
+                ADF4159_PowerDown();
+                RfOff();
                 break;
             case 0x71776572:  // qwer
                 NVIC_SystemReset();

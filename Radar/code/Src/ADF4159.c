@@ -138,71 +138,71 @@ static_assert(sizeof(ADF4159_REGS_t) == 32, "Error");
 // Private Macro ---------------------------------------------------------------
 
 // Private Variables -----------------------------------------------------------
-// clang - format off
+// clang-format off
 // REF: Doubler disabled, Use divide by 2, R-counter = 4
 // Main divider: INT = 76, FRAC = 26954954
 // Use divede
 ADF4159_REGS_t reg_init = {
     .r0 = {
-        .ctrl_bits = 0, 
-        .ramp_on = 0, 
-        .int_value = 300, 
-        .msb_frac_value = 0, 
-        .mux_ctrl = 0xE
+        .ctrl_bits      = 0,
+        .ramp_on        = 0,
+        .int_value      = 300,
+        .msb_frac_value = 0,
+        .mux_ctrl       = 0xE
     },
     .r1 = {
-        .ctrl_bits = 1, 
-        .lsb_frac_value = 0, 
-        .phase_adjust = 0, 
+        .ctrl_bits = 1,
+        .lsb_frac_value = 0,
+        .phase_adjust = 0,
         .phase_value = 0
-    },    
+    },
     .r2 = {
-        .ctrl_bits = 2, 
-        .csr = 0, 
-        .cp_current_setting = 0, 
-        .prescaler = 0, 
-        .rdiv2 = 0, 
-        .ref_doubler = 0, 
-        .r_counter = 8, 
+        .ctrl_bits = 2,
+        .csr = 0,
+        .cp_current_setting = 0,
+        .prescaler = 0,
+        .rdiv2 = 0,
+        .ref_doubler = 0,
+        .r_counter = 8,
         .clk1_div_value = 0
     },
     .r3 = {
-        .ctrl_bits = 3, 
-        .neg_bleed_en = 0, 
-        .neg_bleed_current = 0, 
-        .lol = 0, 
-        .n_sel = 0, 
-        .sd_reset = 0, 
-        .ramp_mode = 0, 
-        .pd_polarity = 0, 
-        .power_down = 0, 
-        .cp_3state = 0, 
+        .ctrl_bits = 3,
+        .neg_bleed_en = 0,
+        .neg_bleed_current = 0,
+        .lol = 0,
+        .n_sel = 0,
+        .sd_reset = 0,
+        .ramp_mode = 0,
+        .pd_polarity = 1,
+        .power_down = 0,
+        .cp_3state = 0,
         .counter_reset = 0
     },
     .r4 = {
-        .ctrl_bits = 4, 
-        .le_sel = 0, 
-        .sigma_delta_mod_mode = 0, 
-        .ramp_status = 0, 
-        .clk_div_mode = 0, 
-        .clk2_div_value = 0, 
+        .ctrl_bits = 4,
+        .le_sel = 0,
+        .sigma_delta_mod_mode = 0,
+        .ramp_status = 0,
+        .clk_div_mode = 0,
+        .clk2_div_value = 0,
         .clk_div_sel = 0
     },
     .r5 = {
-        .ctrl_bits = 5, 
-        .txdata_invert = 0, 
-        .tx_ramp_clk = 0, 
-        .parabolic_ramp = 0, 
-        .interrupt = 0, 
-        .fsk_ramp = 0, 
-        .dual_ramp = 0, 
-        .dev_sel = 0, 
-        .deviation_offset_word = 0, 
+        .ctrl_bits = 5,
+        .txdata_invert = 0,
+        .tx_ramp_clk = 0,
+        .parabolic_ramp = 0,
+        .interrupt = 0,
+        .fsk_ramp = 0,
+        .dual_ramp = 0,
+        .dev_sel = 0,
+        .deviation_offset_word = 0,
         .deviation_word = 0
-    },    
+    },
     .r6 = {
-        .ctrl_bits = 6, 
-        .step_sel = 0, 
+        .ctrl_bits = 6,
+        .step_sel = 0,
         .step_word = 0
     },
     /* 
@@ -210,16 +210,16 @@ ADF4159_REGS_t reg_init = {
         .ctrl_bits = 6
     },*/
     .r7 = {
-        .ctrl_bits = 7, 
-        .txdata_trigger_delay = 0, 
-        .tri_delay = 0, 
-        .sing_full_tri = 0, 
-        .txdata_trigger = 0, 
-        .fast_ramp = 0, 
-        .ramp_delay_fl = 0, 
-        .ramp_delay = 0, 
-        .del_clk_sel = 0, 
-        .del_start_en = 0, 
+        .ctrl_bits = 7,
+        .txdata_trigger_delay = 0,
+        .tri_delay = 0,
+        .sing_full_tri = 0,
+        .txdata_trigger = 0,
+        .fast_ramp = 0,
+        .ramp_delay_fl = 0,
+        .ramp_delay = 0,
+        .del_clk_sel = 0,
+        .del_start_en = 0,
         .delay_start_word = 0
     }
 };
@@ -312,4 +312,16 @@ void ADF4159_WriteReg(uint32_t data)
     }
 
     GpioOutSet(PLL_LE_GPIO_Port, PLL_LE_Pin);
+}
+
+void ADF4159_PowerDown(void)
+{
+    ADF4159_R3_t r3 = {.power_down = 1, .ctrl_bits = 3};
+    ADF4159_WriteReg(*(uint32_t*)&r3);
+}
+
+void ADF4159_PowerUp(void)
+{
+    ADF4159_R3_t r3 = {.power_down = 0, .ctrl_bits = 3};
+    ADF4159_WriteReg(*(uint32_t*)&r3);
 }

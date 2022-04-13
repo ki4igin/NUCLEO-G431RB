@@ -93,44 +93,54 @@
 void GpioInit(void);
 
 // Inline Functions ------------------------------------------------------------
-__STATIC_FORCEINLINE void Led1On(void)
+__STATIC_INLINE void Led1On(void)
 {
     GpioOutReset(LEDS_GPIO_Port, LED1_Pin);
 }
 
-__STATIC_FORCEINLINE void Led1Off(void)
+__STATIC_INLINE void Led1Off(void)
 {
     GpioOutSet(LEDS_GPIO_Port, LED1_Pin);
 }
 
-__STATIC_FORCEINLINE void Led2On(void)
+__STATIC_INLINE void Led2On(void)
 {
     GpioOutReset(LEDS_GPIO_Port, LED2_Pin);
 }
 
-__STATIC_FORCEINLINE void Led2Off(void)
+__STATIC_INLINE void Led2Off(void)
 {
     GpioOutSet(LEDS_GPIO_Port, LED2_Pin);
 }
 
-__STATIC_FORCEINLINE void Led3On(void)
+__STATIC_INLINE void Led3On(void)
 {
     GpioOutReset(LEDS_GPIO_Port, LED3_Pin);
 }
 
-__STATIC_FORCEINLINE void Led3Off(void)
+__STATIC_INLINE void Led3Off(void)
 {
     GpioOutSet(LEDS_GPIO_Port, LED3_Pin);
 }
 
-__STATIC_FORCEINLINE void LedAllOn(void)
+__STATIC_INLINE void LedAllOn(void)
 {
     GpioOutReset(LEDS_GPIO_Port, LED1_Pin | LED2_Pin | LED3_Pin);
 }
 
-__STATIC_FORCEINLINE void LedAllOff(void)
+__STATIC_INLINE void LedAllOff(void)
 {
     GpioOutSet(LEDS_GPIO_Port, LED1_Pin | LED2_Pin | LED3_Pin);
+}
+
+__STATIC_INLINE void RfOn(void)
+{
+    GpioOutSet(RFE_PWR_GPIO_Port, RFE_PWR_Pin);
+}
+
+__STATIC_INLINE void RfOff(void)
+{
+    GpioOutReset(RFE_PWR_GPIO_Port, RFE_PWR_Pin);
 }
 
 #endif

@@ -12,6 +12,9 @@
 // Function prototypes ---------------------------------------------------------
 void ADF4159_Init(void);
 void ADF4159_WriteReg(uint32_t data);
+
+void ADF4159_PowerDown(void);
+void ADF4159_PowerUp(void);
 // Inline Functions ------------------------------------------------------------
 
 #endif

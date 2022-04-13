@@ -15,12 +15,11 @@
                 "USE_FULL_LL_DRIVER"
 
             ],
-            "cStandard": "c11",
-            "cppStandard": "c++17",
+            "cStandard": "gnu17",
             "compilerPath": "C:/toolchain/gcc-arm-none-eabi-9-2020-q2-update-win32/bin/arm-none-eabi-gcc.exe",
             "intelliSenseMode": "gcc-arm",
             "browse": {
-                "limitSymbolsToIncludedHeaders": true
+                // "limitSymbolsToIncludedHeaders": true
             }
         }
     ],
