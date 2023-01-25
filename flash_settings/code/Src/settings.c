@@ -3,42 +3,49 @@
 #include "settings.h"
 #include "flash.h"
 
-#define SETTINGS_PAGE_NUM  127
-#define SETTINGS_PAGE_ADDR flash_get_page_addr(SETTINGS_PAGE_NUM)
+#define SETTINGS_PAGE_NUM      63
+#define SETTINGS_PAGE_SIZE     FLASH_PAGE_SIZE
+#define SETTINGS_PAGE_ADDR     flash_get_page_addr(SETTINGS_PAGE_NUM)
+#define SETTINGS_PAGE_ADDR_END (SETTINGS_PAGE_ADDR + SETTINGS_PAGE_SIZE - 1)
 
 union settings *settings = (union settings *)SETTINGS_PAGE_ADDR;
 
 void settings_init(void)
 {
-    union settings *s = (union settings *)SETTINGS_PAGE_ADDR;
-
-    if (s->magic_key != SETTINGS_MAGIC_KEY) {
+    if (settings->magic_key != SETTINGS_MAGIC_KEY) {
         union settings s_default = {
             .magic_key = SETTINGS_MAGIC_KEY,
             .ip_addr = {192, 168, 0, 10},
             {0}
         };
-        settings_write(&s_default);
+        flash_erase_page(SETTINGS_PAGE_NUM);
+        flash_memcpy_u64(&s_default, settings, sizeof(union settings));
+        return;
     }
 
-    while (s->magic_key == SETTINGS_MAGIC_KEY) {
-        s++;
-    }
+    do {
+        settings++;
+        if (((uint32_t)settings + sizeof(union settings) - 1) > SETTINGS_PAGE_ADDR_END) {
+            break;
+        }
+    } while (settings->magic_key == SETTINGS_MAGIC_KEY);
 
-    s--;
-
-    settings = s;
+    settings--;
 }
 
 void settings_write(union settings *s_new)
 {
     settings++;
-    flash_memcpy_u64(s_new, &settings, sizeof(union settings));
+    if (((uint32_t)settings + sizeof(union settings) - 1) > SETTINGS_PAGE_ADDR_END) {
+        flash_erase_page(SETTINGS_PAGE_NUM);
+        settings = (union settings *)SETTINGS_PAGE_ADDR;
+    }
+    flash_memcpy_u64(s_new, settings, sizeof(union settings));
 }
 
-void settings_change_ipaddr(uint8_t ipaddr_new[4])
+void settings_change_ipaddr(uint32_t ipaddr_new)
 {
     union settings s_new = *settings;
-    *(uint32_t*)s_new.ip_addr = *(uint32_t*)ipaddr_new;
+    *(uint32_t *)s_new.ip_addr = ipaddr_new;
     settings_write(&s_new);
 }

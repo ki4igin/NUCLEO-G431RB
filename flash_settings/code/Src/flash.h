@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "assert.h"
 
-#define FLASH_PAGE_SIZE (4 * 1024)
+#define FLASH_PAGE_SIZE (2 * 1024)
 #define FLASH_BASE_ADDR 0x08000000
 #define flash_get_page_addr(_page) (FLASH_BASE_ADDR + (_page * FLASH_PAGE_SIZE))
 

@@ -23,8 +23,8 @@ extern union settings *settings;
 
 void settings_init(void);
 void settings_write(union settings *s_new);
-void settings_change_ipaddr(uint8_t ipaddr_new[4]);
+void settings_change_ipaddr(uint32_t ipaddr_new);
 
-static_assert(sizeof(union settings) == 128);
+static_assert(sizeof(union settings) == 128, "Err");
 
 #endif
