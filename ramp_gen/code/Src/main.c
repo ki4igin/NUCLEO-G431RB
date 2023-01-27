@@ -26,6 +26,7 @@
 #include "tools.h"
 
 #include "stm32g4xx_ll_tim.h"
+#include "stm32g4xx_ll_dac.h"
 #include "gpio_ex.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -69,7 +70,7 @@ void cmd_work(uint32_t cmd)
         break;
     }
 
-    if ((cmd >> 3) == 'd') {
+    if ((cmd >> 24) == 'd') {
         LL_DAC_ConvertData12RightAligned(DAC1, LL_DAC_CHANNEL_2, cmd & 0xFFF);
     }
 }
@@ -104,6 +105,8 @@ int main(void)
     LL_TIM_CC_EnableChannel(TIM4, LL_TIM_CHANNEL_CH1);
     LL_TIM_CC_EnableChannel(TIM4, LL_TIM_CHANNEL_CH2);
 
+    LL_DAC_Enable(DAC1, LL_DAC_CHANNEL_2);
+    LL_DAC_ConvertData12RightAligned(DAC1, LL_DAC_CHANNEL_2, 0x7FF);
     /* Infinite loop */
 
     while (1) {
